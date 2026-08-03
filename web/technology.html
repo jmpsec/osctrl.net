@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technology &amp; Architecture — osctrl</title>
+  <meta name="description" content="How osctrl works: architecture, components (osctrl-tls, osctrl-api, osctrl-cli, operator frontend), and the technology stack — Go, React, PostgreSQL, Redis.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css?v=2">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="nav-logo" href="index.html"><img src="assets/osctrl-logo-dark.png" alt="osctrl logo">osctrl</a>
+    <div class="nav-links">
+      <a href="use-cases.html">Use Cases</a>
+      <a href="technology.html" class="active">Technology</a>
+      <a href="getting-started.html">Getting Started</a>
+      <a href="resources.html">Resources</a>
+      <a href="https://docs.osctrl.net" target="_blank" rel="noopener">Docs</a>
+      <a class="nav-cta" href="https://github.com/jmpsec/osctrl" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-head">
+  <div class="wrap">
+    <span class="eyebrow">Technology</span>
+    <h1>Architecture &amp; technology stack</h1>
+    <p>
+      osctrl is a set of small, focused Go services sharing a common core, backed by
+      PostgreSQL and Redis, with a modern React operator frontend.
+    </p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Architecture</span>
+      <h2>How the pieces fit together</h2>
+      <p>osquery agents talk to the TLS endpoint. Operators and automation talk to the API. Everything shares one backend.</p>
+    </div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 960 460" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#6a7886"/>
+          </marker>
+        </defs>
+
+        <!-- Column labels -->
+        <text x="90" y="30" fill="#6a7886" font-size="12" font-weight="700" letter-spacing="2" text-anchor="middle">CLIENTS</text>
+        <text x="470" y="30" fill="#6a7886" font-size="12" font-weight="700" letter-spacing="2" text-anchor="middle">OSCTRL SERVICES</text>
+        <text x="850" y="30" fill="#6a7886" font-size="12" font-weight="700" letter-spacing="2" text-anchor="middle">STATE &amp; INTEGRATIONS</text>
+
+        <!-- Clients -->
+        <g>
+          <rect x="20" y="60" width="140" height="54" rx="8" fill="#11171d" stroke="#2a3845"/>
+          <text x="90" y="83" fill="#ecf1f6" font-size="14" font-weight="600" text-anchor="middle">osquery agents</text>
+          <text x="90" y="101" fill="#a6b3c0" font-size="11" text-anchor="middle">Linux · macOS · Windows</text>
+
+          <rect x="20" y="180" width="140" height="54" rx="8" fill="#11171d" stroke="#2a3845"/>
+          <text x="90" y="203" fill="#ecf1f6" font-size="14" font-weight="600" text-anchor="middle">Operators</text>
+          <text x="90" y="221" fill="#a6b3c0" font-size="11" text-anchor="middle">Browser UI</text>
+
+          <rect x="20" y="300" width="140" height="54" rx="8" fill="#11171d" stroke="#2a3845"/>
+          <text x="90" y="323" fill="#ecf1f6" font-size="14" font-weight="600" text-anchor="middle">Automation</text>
+          <text x="90" y="341" fill="#a6b3c0" font-size="11" text-anchor="middle">Scripts · CI · SOAR</text>
+        </g>
+
+        <!-- Services -->
+        <g>
+          <rect x="330" y="60" width="170" height="54" rx="8" fill="#0d2f2e" stroke="#2bc4be"/>
+          <text x="415" y="83" fill="#ecf1f6" font-size="14" font-weight="700" text-anchor="middle">osctrl-tls</text>
+          <text x="415" y="101" fill="#a6b3c0" font-size="11" text-anchor="middle">osquery remote API</text>
+
+          <rect x="330" y="150" width="170" height="54" rx="8" fill="#0d2f2e" stroke="#2bc4be"/>
+          <text x="415" y="173" fill="#ecf1f6" font-size="14" font-weight="700" text-anchor="middle">Frontend (React SPA)</text>
+          <text x="415" y="191" fill="#a6b3c0" font-size="11" text-anchor="middle">Operator UI</text>
+
+          <rect x="330" y="240" width="170" height="54" rx="8" fill="#0d2f2e" stroke="#2bc4be"/>
+          <text x="415" y="263" fill="#ecf1f6" font-size="14" font-weight="700" text-anchor="middle">osctrl-api</text>
+          <text x="415" y="281" fill="#a6b3c0" font-size="11" text-anchor="middle">REST API · JWT auth</text>
+
+          <rect x="330" y="330" width="170" height="54" rx="8" fill="#0d2f2e" stroke="#2bc4be"/>
+          <text x="415" y="353" fill="#ecf1f6" font-size="14" font-weight="700" text-anchor="middle">osctrl-cli</text>
+          <text x="415" y="371" fill="#a6b3c0" font-size="11" text-anchor="middle">Operator CLI</text>
+
+          <rect x="560" y="150" width="150" height="144" rx="8" fill="#11171d" stroke="#2a3845"/>
+          <text x="635" y="212" fill="#ecf1f6" font-size="14" font-weight="700" text-anchor="middle">Shared core</text>
+          <text x="635" y="232" fill="#a6b3c0" font-size="11" text-anchor="middle">Go packages (pkg/*)</text>
+        </g>
+
+        <!-- Data -->
+        <g>
+          <rect x="780" y="60" width="150" height="48" rx="8" fill="#11171d" stroke="#2a3845"/>
+          <text x="855" y="89" fill="#ecf1f6" font-size="13" font-weight="600" text-anchor="middle">PostgreSQL</text>
+
+          <rect x="780" y="140" width="150" height="48" rx="8" fill="#11171d" stroke="#2a3845"/>
+          <text x="855" y="169" fill="#ecf1f6" font-size="13" font-weight="600" text-anchor="middle">Redis cache</text>
+
+          <rect x="780" y="220" width="150" height="48" rx="8" fill="#11171d" stroke="#2a3845"/>
+          <text x="855" y="249" fill="#ecf1f6" font-size="13" font-weight="600" text-anchor="middle">Log destinations</text>
+
+          <rect x="780" y="300" width="150" height="48" rx="8" fill="#11171d" stroke="#2a3845"/>
+          <text x="855" y="329" fill="#ecf1f6" font-size="13" font-weight="600" text-anchor="middle">Carve storage</text>
+        </g>
+
+        <!-- Edges: clients -> services -->
+        <path d="M160 87 L 325 87" stroke="#6a7886" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+        <text x="242" y="78" fill="#6a7886" font-size="10" text-anchor="middle">TLS remote API</text>
+
+        <path d="M160 207 L 325 180" stroke="#6a7886" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+        <path d="M160 327 L 325 273" stroke="#6a7886" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+        <text x="240" y="315" fill="#6a7886" font-size="10" text-anchor="middle">REST API</text>
+        <path d="M160 340 L 325 357" stroke="#6a7886" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+        <!-- Frontend -> API -->
+        <path d="M415 204 L 415 235" stroke="#6a7886" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+        <!-- Services -> shared core -->
+        <path d="M500 87 C 540 87 540 170 555 178" stroke="#6a7886" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+        <path d="M500 267 L 555 250" stroke="#6a7886" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+        <path d="M500 357 C 540 357 540 280 555 270" stroke="#6a7886" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+        <!-- Shared core -> data -->
+        <path d="M710 180 L 775 100 " stroke="#6a7886" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+        <path d="M710 210 L 775 168" stroke="#6a7886" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+        <path d="M710 244 L 775 244" stroke="#6a7886" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+        <path d="M710 275 L 775 318" stroke="#6a7886" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+      </svg>
+    </div>
+    <p class="code-caption" style="text-align:center;">
+      The legacy <code class="inline">osctrl-admin</code> HTML UI is still shipped but is being replaced by the React frontend.
+    </p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Components</span>
+      <h2>The services in detail</h2>
+    </div>
+    <div class="grid grid-2">
+      <div class="card component">
+        <h3><code>osctrl-tls</code></h3>
+        <p>Implements the <a href="https://osquery.readthedocs.io/en/stable/deployment/remote/" target="_blank" rel="noopener">osquery remote API</a> as a TLS endpoint. This is what your fleet talks to:</p>
+        <ul>
+          <li>Node enrollment and configuration retrieval</li>
+          <li>Status and result log ingestion</li>
+          <li>Distributed query read/write, with optional accelerated reads</li>
+          <li>File carving uploads</li>
+        </ul>
+      </div>
+      <div class="card component">
+        <h3><code>osctrl-api</code></h3>
+        <p>REST API service powering the frontend and automation:</p>
+        <ul>
+          <li>JWT authentication by default, trusted proxy controls</li>
+          <li>Audit logging of operator actions</li>
+          <li>Authenticated osquery table metadata and sample query/carve libraries</li>
+          <li>Documented with an OpenAPI specification</li>
+        </ul>
+      </div>
+      <div class="card component">
+        <h3>Operator Frontend <span class="badge new">Primary UI</span></h3>
+        <p>React single-page application served alongside the API:</p>
+        <ul>
+          <li>Nodes, environments, queries, saved queries, carves, users, settings</li>
+          <li>Node activity views and optional posture data</li>
+          <li>Read-only node console with shell-like commands</li>
+          <li>osquery schema-aware query authoring</li>
+        </ul>
+      </div>
+      <div class="card component">
+        <h3><code>osctrl-cli</code></h3>
+        <p>Command-line interface for operators and automation:</p>
+        <ul>
+          <li>Manage environments, nodes, queries, users and settings</li>
+          <li>Works against the REST API, or in direct DB mode</li>
+          <li>Ideal for provisioning, scripting and CI/CD pipelines</li>
+        </ul>
+      </div>
+      <div class="card component">
+        <h3><code>osctrl-admin</code> <span class="badge legacy">Legacy</span></h3>
+        <p>The original server-rendered HTML admin interface. Still available, but deprecated in favor of the React frontend, which is the primary operator experience going forward.</p>
+      </div>
+      <div class="card component">
+        <h3>Shared core (<code>pkg/*</code>)</h3>
+        <p>All services build on the same Go packages: node state, environments, queries, carves, users and permissions, tags, caching, logging pipeline, audit log, GeoIP and posture ingestion, rate limiting and more.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Stack</span>
+      <h2>Technology choices</h2>
+      <p>Boring, proven infrastructure — chosen for performance and operational simplicity.</p>
+    </div>
+    <table class="spec">
+      <thead>
+        <tr><th>Layer</th><th>Technology</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Backend services</td>
+          <td><strong>Go</strong> (1.26+)</td>
+          <td>Single static binaries per component; fast, concurrent log and query handling.</td>
+        </tr>
+        <tr>
+          <td>Operator frontend</td>
+          <td><strong>React 19 · TypeScript · Vite · Tailwind CSS</strong></td>
+          <td>Modern SPA served with the API; Node.js 20+ for development.</td>
+        </tr>
+        <tr>
+          <td>Database</td>
+          <td><strong>PostgreSQL</strong></td>
+          <td>Primary datastore for nodes, environments, queries, users and results.</td>
+        </tr>
+        <tr>
+          <td>Cache</td>
+          <td><strong>Redis</strong></td>
+          <td>Caching and fast node state for high-throughput fleets.</td>
+        </tr>
+        <tr>
+          <td>Endpoint agent</td>
+          <td><strong>osquery</strong></td>
+          <td>Schema metadata shipped through osquery 5.23.1 for query authoring and console <code class="inline">.tables</code>.</td>
+        </tr>
+        <tr>
+          <td>Deployment</td>
+          <td><strong>Docker · systemd · nginx</strong></td>
+          <td>Docker Compose stack for development; provisioning script and configs for production.</td>
+        </tr>
+        <tr>
+          <td>API contract</td>
+          <td><strong>OpenAPI</strong></td>
+          <td><code class="inline">osctrl-api.yaml</code> ships in the repository.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Security</span>
+      <h2>Security-sensitive by design</h2>
+    </div>
+    <div class="grid grid-3">
+      <div class="card">
+        <span class="icon">🔑</span>
+        <h3>Authenticated everything</h3>
+        <p>JWT authentication is the default for the API. Table metadata and sample libraries require authentication too.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🧾</span>
+        <h3>Audit logging</h3>
+        <p>Operator actions are audit-logged, and trusted proxy controls keep client attribution honest behind load balancers.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🛡️</span>
+        <h3>Least-privilege console</h3>
+        <p>The node console is read-only, permission-checked, and scoped to the target node with fresh, active sessions only.</p>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top: 28px; color: var(--text-dim);">
+      Found a vulnerability? Please follow the
+      <a href="https://github.com/jmpsec/osctrl/blob/main/SECURITY.md" target="_blank" rel="noopener">responsible disclosure guidelines</a>.
+    </p>
+  </div>
+</section>
+
+<div class="cta-band">
+  <div class="wrap">
+    <h2>Ready to see it running?</h2>
+    <p>One command with Docker Compose, or deploy natively with the provisioning script.</p>
+    <div class="hero-actions" style="margin-top: 0;">
+      <a class="btn btn-primary" href="getting-started.html">Get Started</a>
+      <a class="btn btn-ghost" href="https://docs.osctrl.net" target="_blank" rel="noopener">Read the Docs</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/osctrl-logo-dark.png" alt="osctrl">
+        <p>Fast and efficient osquery management. Open source, MIT licensed.</p>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="use-cases.html">Use Cases</a></li>
+          <li><a href="technology.html">Technology</a></li>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="resources.html">Resources</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Documentation</h4>
+        <ul>
+          <li><a href="https://osctrl.net" target="_blank" rel="noopener">osctrl.net</a></li>
+          <li><a href="https://osctrl.net/components/" target="_blank" rel="noopener">Components</a></li>
+          <li><a href="https://osctrl.net/deployment/" target="_blank" rel="noopener">Deployment</a></li>
+          <li><a href="https://github.com/jmpsec/osctrl/blob/main/osctrl-api.yaml" target="_blank" rel="noopener">OpenAPI Spec</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Community</h4>
+        <ul>
+          <li><a href="https://github.com/jmpsec/osctrl" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://join.slack.com/t/osquery/shared_invite/zt-1wipcuc04-DBXmo51zYJKBu3_EP3xZPA" target="_blank" rel="noopener">Slack (#osctrl)</a></li>
+          <li><a href="https://github.com/jmpsec/osctrl/issues" target="_blank" rel="noopener">Issues</a></li>
+          <li><a href="https://osquery.io" target="_blank" rel="noopener">osquery</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© osctrl project · MIT License</span>
+      <span>Built on <a href="https://osquery.io" target="_blank" rel="noopener">osquery</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js?v=3" defer></script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>osctrl — Fast and efficient osquery management</title>
+  <meta name="description" content="osctrl is a fast and efficient open-source osquery management solution. Monitor your fleet, distribute configuration, run live queries, carve files and scale to hundreds of thousands of nodes.">
+  <meta property="og:title" content="osctrl — Fast and efficient osquery management">
+  <meta property="og:description" content="Open-source osquery fleet management: live queries, log collection, file carving, node console and more.">
+  <meta property="og:url" content="https://osctrl.io">
+  <meta property="og:image" content="https://osctrl.io/assets/osctrl-logo-dark.png">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css?v=2">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="nav-logo" href="index.html"><img src="assets/osctrl-logo-dark.png" alt="osctrl logo">osctrl</a>
+    <div class="nav-links">
+      <a href="use-cases.html">Use Cases</a>
+      <a href="technology.html">Technology</a>
+      <a href="getting-started.html">Getting Started</a>
+      <a href="resources.html">Resources</a>
+      <a href="https://docs.osctrl.net" target="_blank" rel="noopener">Docs</a>
+      <a class="nav-cta" href="https://github.com/jmpsec/osctrl" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <img class="hero-logo" src="assets/osctrl-logo-dark.png" alt="osctrl">
+    <h1>Fast and efficient<br><span class="accent">osquery management</span></h1>
+    <p class="tagline">
+      osctrl is an open-source osquery fleet manager, implementing the osquery remote API
+      as a TLS endpoint. Full visibility and control over your endpoints — from hundreds
+      to hundreds of thousands of nodes.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="getting-started.html">Get Started</a>
+      <a class="btn btn-ghost" href="https://docs.osctrl.net" target="_blank" rel="noopener">Read the Docs</a>
+      <a class="btn btn-ghost" href="https://github.com/jmpsec/osctrl" target="_blank" rel="noopener">View on GitHub</a>
+    </div>
+    <div class="hero-badges">
+      <span>MIT Licensed</span>
+      <span>Written in Go</span>
+      <span>Powered by osquery</span>
+      <span>Production ready at scale</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">What is osctrl?</span>
+      <h2>One control plane for your entire osquery fleet</h2>
+      <p>
+        osquery gives you a SQL interface to every endpoint. osctrl makes that fleet
+        manageable: enrollment, configuration, queries, logs and file carving — all
+        from a modern operator UI, a REST API, or the CLI.
+      </p>
+    </div>
+    <div class="grid grid-3">
+      <div class="card">
+        <span class="icon">✨</span>
+        <h3>Monitor everything</h3>
+        <p>Track every system running osquery in real time — node status, activity, enrollment state and health across all your environments.</p>
+      </div>
+      <div class="card">
+        <span class="icon">📦</span>
+        <h3>Distribute configuration</h3>
+        <p>Push osquery configuration and scheduled query packs to your entire fleet in seconds, organized by environment and tags.</p>
+      </div>
+      <div class="card">
+        <span class="icon">📊</span>
+        <h3>Collect all logs</h3>
+        <p>Ingest status and result logs from every node and route them to your logging pipeline of choice.</p>
+      </div>
+      <div class="card">
+        <span class="icon">⚡</span>
+        <h3>Run on-demand queries</h3>
+        <p>Launch distributed queries across any subset of nodes and get results back fast — with optional accelerated query reads.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🖥️</span>
+        <h3>Node console</h3>
+        <p>Open a read-only, shell-like console against any node, backed by osquery: <code class="inline">ls</code>, <code class="inline">ps</code>, <code class="inline">stat</code>, <code class="inline">sql</code>, <code class="inline">.tables</code> and more.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🗂️</span>
+        <h3>Carve files &amp; directories</h3>
+        <p>Retrieve files and directories from remote endpoints for forensics and incident response, with permission-checked access.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Components</span>
+      <h2>Purpose-built services, one shared core</h2>
+      <p>Every osctrl component is a small, focused service built on shared Go packages, backed by PostgreSQL and Redis.</p>
+    </div>
+    <div class="grid grid-2">
+      <div class="card component">
+        <h3><code>osctrl-tls</code></h3>
+        <p>The TLS endpoint implementing the osquery remote API. Handles node enrollment, configuration delivery, log ingestion, distributed queries and file carving for your entire fleet.</p>
+      </div>
+      <div class="card component">
+        <h3><code>osctrl-api</code></h3>
+        <p>The REST API service, secured with JWT authentication by default, with trusted proxy controls and audit logging. Powers the operator UI and any automation you build. Fully documented with OpenAPI.</p>
+      </div>
+      <div class="card component">
+        <h3>Operator Frontend <span class="badge new">New</span></h3>
+        <p>A modern React single-page application: nodes, environments, live and saved queries, carves, users, settings, node activity, posture data and the node console — all in one UI.</p>
+      </div>
+      <div class="card component">
+        <h3><code>osctrl-cli</code></h3>
+        <p>The operator command-line interface for scripting and administration — manage environments, nodes, queries and users from your terminal or CI, via API or direct DB mode.</p>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top: 28px;">
+      <a href="technology.html">Explore the architecture and technology stack →</a>
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Why osctrl?</span>
+      <h2>Built for security teams that operate at scale</h2>
+    </div>
+    <div class="grid grid-4">
+      <div class="card">
+        <span class="icon">⚙️</span>
+        <h3>Massive scale</h3>
+        <p>Proven from hundreds to hundreds of thousands of nodes without compromising performance.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🔐</span>
+        <h3>Security-first defaults</h3>
+        <p>JWT auth by default, trusted proxy controls, audit logging and authenticated access throughout.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🧭</span>
+        <h3>Rich context</h3>
+        <p>Optional posture ingestion, MaxMind GeoIP country enrichment and node activity tracking.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🆓</span>
+        <h3>Open source</h3>
+        <p>MIT licensed, actively developed, and already used in production environments.</p>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top: 28px;">
+      <a href="use-cases.html">See what teams use osctrl for →</a>
+    </p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Quick start</span>
+      <h2>Up and running in minutes</h2>
+      <p>Spin up the full stack locally with Docker Compose — TLS endpoint, API, frontend, PostgreSQL and Redis included.</p>
+    </div>
+    <div style="max-width: 720px; margin: 0 auto;">
+<pre class="code"><span class="c"># Clone the repository</span>
+<span class="p">$</span> git clone https://github.com/jmpsec/osctrl.git
+<span class="p">$</span> cd osctrl
+
+<span class="c"># Build and run everything in Docker</span>
+<span class="p">$</span> make docker_dev</pre>
+      <p class="code-caption">
+        Frontend at <code class="inline">https://localhost:8444</code> · Legacy admin UI at <code class="inline">https://localhost:8443</code>
+      </p>
+      <p style="margin-top: 20px;">
+        <a href="getting-started.html">Full installation options: Docker, provisioning script, or building from source →</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <div class="wrap">
+    <h2>Take control of your osquery fleet</h2>
+    <p>Free, open source, and ready to deploy today.</p>
+    <div class="hero-actions" style="margin-top: 0;">
+      <a class="btn btn-primary" href="getting-started.html">Get Started</a>
+      <a class="btn btn-ghost" href="https://github.com/jmpsec/osctrl" target="_blank" rel="noopener">Star on GitHub</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/osctrl-logo-dark.png" alt="osctrl">
+        <p>Fast and efficient osquery management. Open source, MIT licensed.</p>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="use-cases.html">Use Cases</a></li>
+          <li><a href="technology.html">Technology</a></li>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="resources.html">Resources</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Documentation</h4>
+        <ul>
+          <li><a href="https://osctrl.net" target="_blank" rel="noopener">osctrl.net</a></li>
+          <li><a href="https://osctrl.net/components/" target="_blank" rel="noopener">Components</a></li>
+          <li><a href="https://osctrl.net/deployment/" target="_blank" rel="noopener">Deployment</a></li>
+          <li><a href="https://github.com/jmpsec/osctrl/blob/main/osctrl-api.yaml" target="_blank" rel="noopener">OpenAPI Spec</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Community</h4>
+        <ul>
+          <li><a href="https://github.com/jmpsec/osctrl" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://join.slack.com/t/osquery/shared_invite/zt-1wipcuc04-DBXmo51zYJKBu3_EP3xZPA" target="_blank" rel="noopener">Slack (#osctrl)</a></li>
+          <li><a href="https://github.com/jmpsec/osctrl/issues" target="_blank" rel="noopener">Issues</a></li>
+          <li><a href="https://osquery.io" target="_blank" rel="noopener">osquery</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© osctrl project · MIT License</span>
+      <span>Built on <a href="https://osquery.io" target="_blank" rel="noopener">osquery</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js?v=3" defer></script>
+</body>
+</html>

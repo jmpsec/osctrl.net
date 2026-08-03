@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Getting Started — osctrl</title>
+  <meta name="description" content="Deploy osctrl in minutes: Docker Compose development stack, the provisioning script for Ubuntu, or building all components from source with Go.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css?v=2">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="nav-logo" href="index.html"><img src="assets/osctrl-logo-dark.png" alt="osctrl logo">osctrl</a>
+    <div class="nav-links">
+      <a href="use-cases.html">Use Cases</a>
+      <a href="technology.html">Technology</a>
+      <a href="getting-started.html" class="active">Getting Started</a>
+      <a href="resources.html">Resources</a>
+      <a href="https://docs.osctrl.net" target="_blank" rel="noopener">Docs</a>
+      <a class="nav-cta" href="https://github.com/jmpsec/osctrl" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-head">
+  <div class="wrap">
+    <span class="eyebrow">Getting Started</span>
+    <h1>Deploy osctrl your way</h1>
+    <p>
+      Three paths to a running deployment: Docker Compose for a quick start,
+      the provisioning script for native installs, or building from source.
+    </p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Option 1 · Recommended</span>
+      <h2>🐳 Docker Compose</h2>
+      <p>The fastest way to get a fully functional deployment — all services, PostgreSQL and Redis wired together.</p>
+    </div>
+    <div style="max-width: 760px; margin: 0 auto;">
+<pre class="code"><span class="c"># Clone the repository</span>
+<span class="p">$</span> git clone https://github.com/jmpsec/osctrl.git
+<span class="p">$</span> cd osctrl
+
+<span class="c"># Build and run the whole stack in Docker</span>
+<span class="p">$</span> make docker_dev</pre>
+      <p class="code-caption">
+        Requires <a href="https://www.docker.com/" target="_blank" rel="noopener">Docker</a> and
+        <a href="https://docs.docker.com/compose/" target="_blank" rel="noopener">Docker Compose</a>.
+        The stack is defined in <code class="inline">docker-compose-dev.yml</code>.
+      </p>
+      <div class="grid grid-2" style="margin-top: 28px;">
+        <div class="card">
+          <h3>Frontend (React SPA)</h3>
+          <p><code class="inline">https://localhost:8444</code><br>The primary operator experience.</p>
+        </div>
+        <div class="card">
+          <h3>Legacy admin UI</h3>
+          <p><code class="inline">https://localhost:8443</code><br>The server-rendered <code class="inline">osctrl-admin</code> interface.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Option 2</span>
+      <h2>🤖 Provisioning script</h2>
+      <p>
+        The <code class="inline">deploy/provision.sh</code> script installs all dependencies and configures
+        osctrl on a recent Ubuntu LTS system — usable for development and, with care, for production deployments.
+      </p>
+    </div>
+    <div style="max-width: 760px; margin: 0 auto;">
+<pre class="code"><span class="c"># From a fresh Ubuntu LTS machine</span>
+<span class="p">$</span> git clone https://github.com/jmpsec/osctrl.git
+<span class="p">$</span> cd osctrl
+<span class="p">$</span> ./deploy/provision.sh --help</pre>
+      <p class="code-caption">
+        See the <a href="https://osctrl.net/deployment/natively/" target="_blank" rel="noopener">native deployment documentation</a>
+        for full usage, flags and production guidance.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Option 3</span>
+      <h2>🏗 Build from source</h2>
+      <p>All you need is Go 1.26.3+ (and Node.js 20+ if you're working on the frontend).</p>
+    </div>
+    <div style="max-width: 760px; margin: 0 auto;">
+<pre class="code"><span class="p">$</span> git clone https://github.com/jmpsec/osctrl.git
+<span class="p">$</span> cd osctrl
+<span class="p">$</span> make</pre>
+      <p class="code-caption">
+        Compiles all components — <code class="inline">osctrl-tls</code>, <code class="inline">osctrl-admin</code>,
+        <code class="inline">osctrl-api</code>, <code class="inline">osctrl-cli</code> — into <code class="inline">bin/</code>,
+        and builds the frontend bundle. For frontend-only work: <code class="inline">make frontend-dev</code>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Next steps</span>
+      <h2>From zero to managed fleet</h2>
+    </div>
+    <div class="steps">
+      <div class="card step">
+        <span class="num">1</span>
+        <h3>Create an environment</h3>
+        <p>Environments group your nodes and hold their osquery configuration, enrollment secrets and query schedules.</p>
+      </div>
+      <div class="card step">
+        <span class="num">2</span>
+        <h3>Enroll your nodes</h3>
+        <p>osctrl generates enrollment packages and one-liners per environment. Point your osquery agents at your TLS endpoint and they appear in the UI.</p>
+      </div>
+      <div class="card step">
+        <span class="num">3</span>
+        <h3>Query your fleet</h3>
+        <p>Run on-demand distributed queries, schedule packs, open a node console, and carve files when you need artifacts.</p>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top: 32px;">
+      Full guides at <a href="https://osctrl.net" target="_blank" rel="noopener">osctrl.net</a> — deployment, components, CLI usage and API reference.
+    </p>
+  </div>
+</section>
+
+<div class="cta-band">
+  <div class="wrap">
+    <h2>Questions along the way?</h2>
+    <p>Join #osctrl in the osquery Slack, or open an issue on GitHub.</p>
+    <div class="hero-actions" style="margin-top: 0;">
+      <a class="btn btn-primary" href="https://join.slack.com/t/osquery/shared_invite/zt-1wipcuc04-DBXmo51zYJKBu3_EP3xZPA" target="_blank" rel="noopener">Join Slack</a>
+      <a class="btn btn-ghost" href="resources.html">Browse Resources</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/osctrl-logo-dark.png" alt="osctrl">
+        <p>Fast and efficient osquery management. Open source, MIT licensed.</p>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="use-cases.html">Use Cases</a></li>
+          <li><a href="technology.html">Technology</a></li>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="resources.html">Resources</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Documentation</h4>
+        <ul>
+          <li><a href="https://osctrl.net" target="_blank" rel="noopener">osctrl.net</a></li>
+          <li><a href="https://osctrl.net/components/" target="_blank" rel="noopener">Components</a></li>
+          <li><a href="https://osctrl.net/deployment/" target="_blank" rel="noopener">Deployment</a></li>
+          <li><a href="https://github.com/jmpsec/osctrl/blob/main/osctrl-api.yaml" target="_blank" rel="noopener">OpenAPI Spec</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Community</h4>
+        <ul>
+          <li><a href="https://github.com/jmpsec/osctrl" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://join.slack.com/t/osquery/shared_invite/zt-1wipcuc04-DBXmo51zYJKBu3_EP3xZPA" target="_blank" rel="noopener">Slack (#osctrl)</a></li>
+          <li><a href="https://github.com/jmpsec/osctrl/issues" target="_blank" rel="noopener">Issues</a></li>
+          <li><a href="https://osquery.io" target="_blank" rel="noopener">osquery</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© osctrl project · MIT License</span>
+      <span>Built on <a href="https://osquery.io" target="_blank" rel="noopener">osquery</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js?v=3" defer></script>
+</body>
+</html>
