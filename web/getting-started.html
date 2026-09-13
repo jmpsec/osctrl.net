@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Getting Started — osctrl</title>
-  <meta name="description" content="Deploy osctrl in minutes: Docker Compose development stack, the provisioning script for Ubuntu, or building all components from source with Go.">
+  <meta name="description" content="Deploy osctrl in minutes: Docker Compose development stack, the provisioning script for Ubuntu, DEB/RPM packages, or building all components from source with Go.">
   <link rel="canonical" href="https://osctrl.net/getting-started.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="osctrl">
@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=2">
+  <link rel="stylesheet" href="assets/style.css?v=3">
 </head>
 <body>
 
@@ -48,7 +48,8 @@
     <h1>Deploy osctrl your way</h1>
     <p>
       Three paths to a running deployment: Docker Compose for a quick start,
-      the provisioning script for native installs, or building from source.
+      the provisioning script for native installs, or building from source —
+      then connect an AI agent over MCP if you want one.
     </p>
   </div>
 </header>
@@ -65,8 +66,13 @@
 <span class="p">$</span> git clone https://github.com/jmpsec/osctrl.git
 <span class="p">$</span> cd osctrl
 
-<span class="c"># Build and run the whole stack in Docker</span>
-<span class="p">$</span> make docker_dev</pre>
+<span class="c"># Prepare the environment file and development certificate</span>
+<span class="p">$</span> cp .env.example .env
+<span class="p">$</span> make docker_dev_certs
+
+<span class="c"># Build and start the whole stack</span>
+<span class="p">$</span> make docker_dev_build
+<span class="p">$</span> make docker_dev_up</pre>
       <p class="code-caption">
         Requires <a href="https://www.docker.com/" target="_blank" rel="noopener">Docker</a> and
         <a href="https://docs.docker.com/compose/" target="_blank" rel="noopener">Docker Compose</a>.
@@ -74,12 +80,12 @@
       </p>
       <div class="grid grid-2" style="margin-top: 28px;">
         <div class="card">
-          <h3>Frontend (React SPA)</h3>
-          <p><code class="inline">https://localhost:8444</code><br>The primary operator experience.</p>
+          <h3>What comes up</h3>
+          <p>nginx, the React frontend, <code class="inline">osctrl-api</code>, <code class="inline">osctrl-tls</code>, a CLI bootstrap, PostgreSQL, Redis and sample osquery clients.</p>
         </div>
         <div class="card">
-          <h3>Legacy admin UI</h3>
-          <p><code class="inline">https://localhost:8443</code><br>The server-rendered <code class="inline">osctrl-admin</code> interface.</p>
+          <h3>Where to go</h3>
+          <p><code class="inline">https://localhost:8444</code><br>The operator frontend. Tear it all down again with <code class="inline">make docker_dev_down</code>.</p>
         </div>
       </div>
     </div>
@@ -102,7 +108,7 @@
 <span class="p">$</span> cd osctrl
 <span class="p">$</span> ./deploy/provision.sh --help</pre>
       <p class="code-caption">
-        See the <a href="https://osctrl.net/deployment/natively/" target="_blank" rel="noopener">native deployment documentation</a>
+        See the <a href="https://docs.osctrl.net/deployment/natively/" target="_blank" rel="noopener">native deployment documentation</a>
         for full usage, flags and production guidance.
       </p>
     </div>
@@ -114,22 +120,61 @@
     <div class="section-head">
       <span class="eyebrow">Option 3</span>
       <h2>🏗 Build from source</h2>
-      <p>All you need is Go 1.26.3+ (and Node.js 20+ if you're working on the frontend).</p>
+      <p>All you need is Go 1.27.1 (and Node.js 22+ if you're working on the frontend).</p>
     </div>
     <div style="max-width: 760px; margin: 0 auto;">
 <pre class="code"><span class="p">$</span> git clone https://github.com/jmpsec/osctrl.git
 <span class="p">$</span> cd osctrl
 <span class="p">$</span> make</pre>
       <p class="code-caption">
-        Compiles all components — <code class="inline">osctrl-tls</code>, <code class="inline">osctrl-admin</code>,
-        <code class="inline">osctrl-api</code>, <code class="inline">osctrl-cli</code> — into <code class="inline">bin/</code>,
+        Compiles all components — <code class="inline">osctrl-tls</code>, <code class="inline">osctrl-api</code>,
+        <code class="inline">osctrl-cli</code>, <code class="inline">osctrl-mcp</code> — into <code class="inline">bin/</code>,
         and builds the frontend bundle. For frontend-only work: <code class="inline">make frontend-dev</code>.
+        For the MCP server alone: <code class="inline">make mcp</code>.
+      </p>
+      <p class="code-caption" style="margin-top: 12px;">
+        Prefer packages? Tagged releases ship DEB and RPM packages for <code class="inline">osctrl-tls</code>,
+        <code class="inline">osctrl-api</code> and <code class="inline">osctrl-cli</code> with systemd units, plus
+        standalone <code class="inline">osctrl-mcp</code> binaries for Linux, macOS and Windows on amd64 and arm64 —
+        see the <a href="https://github.com/jmpsec/osctrl/releases" target="_blank" rel="noopener">releases page</a>.
       </p>
     </div>
   </div>
 </section>
 
 <section class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Optional</span>
+      <h2>🤖 Connect an AI agent over MCP</h2>
+      <p>
+        Point an MCP client at your deployment and it can inspect the fleet — environments,
+        nodes, the osquery schema, query results — bounded by the token you give it.
+      </p>
+    </div>
+    <div style="max-width: 760px; margin: 0 auto;">
+<pre class="code"><span class="c"># Create a dedicated, read-scoped service user first</span>
+<span class="p">$</span> osctrl-cli user add -u mcp-agent -s -e prod
+<span class="p">$</span> osctrl-cli user permissions -u mcp-agent -e prod --user
+
+<span class="c"># Then register the stdio server with your client</span>
+<span class="p">$</span> claude mcp add osctrl \
+    --env OSCTRL_API_URL=https://osctrl.example.com \
+    --env OSCTRL_API_TOKEN=&lt;service-user-token&gt; \
+    -- /opt/osctrl/bin/osctrl-mcp</pre>
+      <p class="code-caption">
+        Or skip the binary entirely: set <code class="inline">mcp.enabled: true</code> in
+        <code class="inline">api.yml</code> and point clients at
+        <code class="inline">https://&lt;your-host&gt;/api/v1/mcp</code>, where each user authenticates as themselves.
+        Write tools stay off until you turn them on.
+        Full tool list and client examples in
+        <a href="https://github.com/jmpsec/osctrl/blob/main/MCP.md" target="_blank" rel="noopener">MCP.md</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">Next steps</span>
@@ -149,11 +194,11 @@
       <div class="card step">
         <span class="num">3</span>
         <h3>Query your fleet</h3>
-        <p>Run on-demand distributed queries, schedule packs, open a node console, and carve files when you need artifacts.</p>
+        <p>Run on-demand distributed queries, schedule packs, open a node console, set alert rules, and carve files when you need artifacts.</p>
       </div>
     </div>
     <p style="text-align:center; margin-top: 32px;">
-      Full guides at <a href="https://osctrl.net" target="_blank" rel="noopener">osctrl.net</a> — deployment, components, CLI usage and API reference.
+      Full guides at <a href="https://docs.osctrl.net" target="_blank" rel="noopener">docs.osctrl.net</a> — deployment, components, CLI usage and API reference.
     </p>
   </div>
 </section>
@@ -188,9 +233,9 @@
       <div>
         <h4>Documentation</h4>
         <ul>
-          <li><a href="https://osctrl.net" target="_blank" rel="noopener">osctrl.net</a></li>
-          <li><a href="https://osctrl.net/components/" target="_blank" rel="noopener">Components</a></li>
-          <li><a href="https://osctrl.net/deployment/" target="_blank" rel="noopener">Deployment</a></li>
+          <li><a href="https://docs.osctrl.net" target="_blank" rel="noopener">docs.osctrl.net</a></li>
+          <li><a href="https://docs.osctrl.net/components/" target="_blank" rel="noopener">Components</a></li>
+          <li><a href="https://docs.osctrl.net/deployment/" target="_blank" rel="noopener">Deployment</a></li>
           <li><a href="https://github.com/jmpsec/osctrl/blob/main/osctrl-api.yaml" target="_blank" rel="noopener">OpenAPI Spec</a></li>
         </ul>
       </div>

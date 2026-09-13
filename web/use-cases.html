@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Use Cases — osctrl</title>
-  <meta name="description" content="What security teams use osctrl for: fleet visibility, threat hunting, incident response, compliance and posture monitoring, forensics and automation.">
+  <meta name="description" content="What security teams use osctrl for: fleet visibility, threat hunting, incident response, alerting, compliance and posture monitoring, forensics, automation and AI agents.">
   <link rel="canonical" href="https://osctrl.net/use-cases.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="osctrl">
   <meta property="og:title" content="Use Cases — osctrl">
-  <meta property="og:description" content="Use osctrl for endpoint visibility, threat hunting, live investigation, compliance, posture monitoring, forensics and automation.">
+  <meta property="og:description" content="Use osctrl for endpoint visibility, threat hunting, live investigation, alerting, compliance, posture monitoring, forensics, automation and AI-assisted operations.">
   <meta property="og:url" content="https://osctrl.net/use-cases.html">
   <meta property="og:image" content="https://osctrl.net/assets/osctrl-og.png">
   <meta property="og:image:width" content="1200">
@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=2">
+  <link rel="stylesheet" href="assets/style.css?v=3">
 </head>
 <body>
 
@@ -106,6 +106,7 @@
         <ul>
           <li>Read-only node console: <code class="inline">pwd</code>, <code class="inline">cd</code>, <code class="inline">ls</code>, <code class="inline">stat</code>, <code class="inline">ps</code>, <code class="inline">sql</code> and more, backed by osquery</li>
           <li>Carve files and directories from remote endpoints, with permission-checked <code class="inline">get</code></li>
+          <li>Per-node file explorer: accelerated, permission-checked directory listings and stat</li>
           <li>Console acceleration scoped to the target node and fresh, active sessions</li>
           <li>Audit logging of operator actions</li>
         </ul>
@@ -136,6 +137,48 @@
 
     <div class="feature-row">
       <div>
+        <h3>🔔 Alerting &amp; on-call</h3>
+        <p>
+          Turn the telemetry you already collect into notifications. Rules match against
+          result, status and query logs, and against node state — a node going inactive,
+          or coming back.
+        </p>
+        <ul>
+          <li>Scope a rule globally, to one environment, or to a single node</li>
+          <li>Fan out to webhook and email channels, with Redis-backed cooldown and dedupe</li>
+          <li>Dispatched history, so you can see what actually fired and when</li>
+          <li>Hot reload — rules take effect without restarting a service</li>
+          <li>Create a rule straight from a node's page; covered nodes show a marker</li>
+        </ul>
+      </div>
+      <div class="card">
+        <p><strong>Benefit:</strong> stop watching dashboards. The fleet tells you when something changes, through the channels your team already reads.</p>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div>
+        <h3>🧠 AI-assisted fleet operations</h3>
+        <p>
+          osctrl speaks the <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Model
+          Context Protocol</a>, so an agent like Claude can answer questions about your fleet
+          directly — without you writing a single integration.
+        </p>
+        <ul>
+          <li>Read tools for environments, fleet stats, node search and detail, the osquery schema, and query results</li>
+          <li>Run it as the <code class="inline">osctrl-mcp</code> stdio binary, or host it inside <code class="inline">osctrl-api</code> at <code class="inline">/api/v1/mcp</code></li>
+          <li>Every tool call runs through the API's own permission checks as the calling user</li>
+          <li>Write tools — scheduling and expiring queries, tagging nodes — are a separate switch, off by default</li>
+          <li>Hosted MCP audit-logs every tool call, reads included</li>
+        </ul>
+      </div>
+      <div class="card">
+        <p><strong>Benefit:</strong> "which macOS hosts are missing disk encryption?" becomes a question you ask, not a query you write — with the agent's reach bounded by its token.</p>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div>
         <h3>🤖 Automation &amp; integrations</h3>
         <p>
           Everything an operator can do in the UI is available programmatically.
@@ -144,7 +187,8 @@
         <ul>
           <li>REST API (<code class="inline">osctrl-api</code>) with JWT authentication and an OpenAPI specification</li>
           <li><code class="inline">osctrl-cli</code> for scripting, CI/CD and administration</li>
-          <li>Pluggable log destinations to feed your SIEM or data lake</li>
+          <li>Pluggable log destinations — S3, Kinesis, Kafka, Elasticsearch and more — to feed your SIEM or data lake</li>
+          <li>Per-environment log sink configuration, managed through the API</li>
           <li>Environment-scoped enrollment for automated fleet provisioning</li>
         </ul>
       </div>
@@ -163,6 +207,8 @@
         <ul>
           <li>Independent osquery configuration per environment</li>
           <li>User and permission management scoped per environment</li>
+          <li>Federated login through OIDC or SAML, with optional MFA for password accounts</li>
+          <li>Optional deployment health page covering database, Redis, services and upgrade status</li>
           <li>Scale from a home lab to hundreds of thousands of production nodes</li>
         </ul>
       </div>
@@ -204,9 +250,9 @@
       <div>
         <h4>Documentation</h4>
         <ul>
-          <li><a href="https://osctrl.net" target="_blank" rel="noopener">osctrl.net</a></li>
-          <li><a href="https://osctrl.net/components/" target="_blank" rel="noopener">Components</a></li>
-          <li><a href="https://osctrl.net/deployment/" target="_blank" rel="noopener">Deployment</a></li>
+          <li><a href="https://docs.osctrl.net" target="_blank" rel="noopener">docs.osctrl.net</a></li>
+          <li><a href="https://docs.osctrl.net/components/" target="_blank" rel="noopener">Components</a></li>
+          <li><a href="https://docs.osctrl.net/deployment/" target="_blank" rel="noopener">Deployment</a></li>
           <li><a href="https://github.com/jmpsec/osctrl/blob/main/osctrl-api.yaml" target="_blank" rel="noopener">OpenAPI Spec</a></li>
         </ul>
       </div>

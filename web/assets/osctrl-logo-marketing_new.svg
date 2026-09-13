@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="osctrl marketing tower mark">
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M84 82 Q200 0 316 82" stroke="#e5ded9" stroke-width="18"/>
+    <path d="M124 144 Q200 92 276 144" stroke="#e5ded9" stroke-width="16"/>
+  </g>
+  <path d="M206 196 V168 Q206 156 218 156 Q230 156 230 168 V196 Z" fill="#e5ded9"/>
+  <path d="M124 250 L166 190 H234 L276 250 L244 315 H156 Z" fill="none" stroke="#e5ded9" stroke-width="14" stroke-linejoin="miter" stroke-miterlimit="6"/>
+  <path d="M156 250 H244 L225 292 H175 Z" fill="#2bc4be"/>
+  <path d="M200 250 V292" stroke="#07090c" stroke-width="6" stroke-linecap="butt"/>
+  <rect x="160" y="315" width="16" height="81" rx="0" fill="#e5ded9"/>
+  <rect x="224" y="315" width="16" height="81" rx="0" fill="#e5ded9"/>
+</svg>

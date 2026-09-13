@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=2">
+  <link rel="stylesheet" href="assets/style.css?v=3">
 </head>
 <body>
 
@@ -69,7 +69,7 @@
       <div class="card">
         <span class="icon">🧩</span>
         <h3>Components</h3>
-        <p>Deep dives into <code class="inline">osctrl-tls</code>, <code class="inline">osctrl-api</code>, <code class="inline">osctrl-cli</code> and the operator UI.</p>
+        <p>Deep dives into <code class="inline">osctrl-tls</code>, <code class="inline">osctrl-api</code>, <code class="inline">osctrl-cli</code>, <code class="inline">osctrl-mcp</code> and the operator UI.</p>
         <a class="more" href="https://docs.osctrl.net/components/" target="_blank" rel="noopener">Components docs →</a>
       </div>
       <div class="card">
@@ -100,6 +100,12 @@
         <h3>OpenAPI specification</h3>
         <p>The full REST API contract for <code class="inline">osctrl-api</code> — generate clients or explore endpoints.</p>
         <a class="more" href="https://github.com/jmpsec/osctrl/blob/main/osctrl-api.yaml" target="_blank" rel="noopener">osctrl-api.yaml →</a>
+      </div>
+      <div class="card">
+        <span class="icon">🤖</span>
+        <h3>MCP server</h3>
+        <p>The complete <code class="inline">osctrl-mcp</code> reference — tool list, authentication model, the hosted <code class="inline">/api/v1/mcp</code> endpoint and client configuration examples.</p>
+        <a class="more" href="https://github.com/jmpsec/osctrl/blob/main/MCP.md" target="_blank" rel="noopener">MCP.md →</a>
       </div>
       <div class="card">
         <span class="icon">🏛️</span>
@@ -163,7 +169,7 @@
     <div class="section-head">
       <span class="eyebrow">Ecosystem</span>
       <h2>osquery resources</h2>
-      <p>osctrl builds on osquery — these references pair well with it.</p>
+      <p>osctrl builds on osquery and speaks MCP — these references pair well with it.</p>
     </div>
     <div class="grid grid-3">
       <div class="card">
@@ -183,6 +189,12 @@
         <h3>osquery schema</h3>
         <p>Browse every table and column available for your queries — osctrl ships schema metadata through 5.23.1.</p>
         <a class="more" href="https://osquery.io/schema/" target="_blank" rel="noopener">Schema browser →</a>
+      </div>
+      <div class="card">
+        <span class="icon">🔌</span>
+        <h3>Model Context Protocol</h3>
+        <p>The open protocol behind <code class="inline">osctrl-mcp</code> — how AI clients discover and call tools.</p>
+        <a class="more" href="https://modelcontextprotocol.io" target="_blank" rel="noopener">modelcontextprotocol.io →</a>
       </div>
     </div>
   </div>
@@ -218,9 +230,9 @@
       <div>
         <h4>Documentation</h4>
         <ul>
-          <li><a href="https://osctrl.net" target="_blank" rel="noopener">osctrl.net</a></li>
-          <li><a href="https://osctrl.net/components/" target="_blank" rel="noopener">Components</a></li>
-          <li><a href="https://osctrl.net/deployment/" target="_blank" rel="noopener">Deployment</a></li>
+          <li><a href="https://docs.osctrl.net" target="_blank" rel="noopener">docs.osctrl.net</a></li>
+          <li><a href="https://docs.osctrl.net/components/" target="_blank" rel="noopener">Components</a></li>
+          <li><a href="https://docs.osctrl.net/deployment/" target="_blank" rel="noopener">Deployment</a></li>
           <li><a href="https://github.com/jmpsec/osctrl/blob/main/osctrl-api.yaml" target="_blank" rel="noopener">OpenAPI Spec</a></li>
         </ul>
       </div>

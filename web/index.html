@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>osctrl — Open-source osquery fleet management</title>
-  <meta name="description" content="osctrl is an open-source osquery fleet manager for endpoint visibility, configuration, live queries, log collection, file carving and operator workflows at scale.">
+  <meta name="description" content="osctrl is an open-source osquery fleet manager for endpoint visibility, configuration, live queries, log collection, alerting, file carving and MCP-based AI workflows at scale.">
   <link rel="canonical" href="https://osctrl.net/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="osctrl">
   <meta property="og:title" content="osctrl — Open-source osquery fleet management">
-  <meta property="og:description" content="Manage your osquery fleet with enrollment, configuration, live queries, logs, file carving, node console and a modern operator UI.">
+  <meta property="og:description" content="Manage your osquery fleet with enrollment, configuration, live queries, logs, alerting, file carving, node console, an MCP server and a modern operator UI.">
   <meta property="og:url" content="https://osctrl.net/">
   <meta property="og:image" content="https://osctrl.net/assets/osctrl-og.png">
   <meta property="og:image:width" content="1200">
@@ -17,14 +17,14 @@
   <meta property="og:image:alt" content="osctrl platform dashboard for osquery fleet operations">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="osctrl — Open-source osquery fleet management">
-  <meta name="twitter:description" content="Endpoint visibility, live queries, logs, file carving and osquery operations from one open-source platform.">
+  <meta name="twitter:description" content="Endpoint visibility, live queries, logs, alerting, file carving and MCP-powered osquery operations from one open-source platform.">
   <meta name="twitter:image" content="https://osctrl.net/assets/osctrl-og.png">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=2">
+  <link rel="stylesheet" href="assets/style.css?v=3">
 </head>
 <body>
 
@@ -60,6 +60,7 @@
       <span>MIT Licensed</span>
       <span>Written in Go</span>
       <span>Powered by osquery</span>
+      <span>MCP ready</span>
       <span>Production ready at scale</span>
     </div>
   </div>
@@ -72,8 +73,9 @@
       <h2>One control plane for your entire osquery fleet</h2>
       <p>
         osquery gives you a SQL interface to every endpoint. osctrl makes that fleet
-        manageable: enrollment, configuration, queries, logs and file carving — all
-        from a modern operator UI, a REST API, or the CLI.
+        manageable: enrollment, configuration, queries, logs, alerting and file carving —
+        from a modern operator UI, a REST API, the CLI, or an AI agent over the
+        Model Context Protocol.
       </p>
     </div>
     <figure class="platform-preview">
@@ -111,6 +113,21 @@
         <h3>Carve files &amp; directories</h3>
         <p>Retrieve files and directories from remote endpoints for forensics and incident response, with permission-checked access.</p>
       </div>
+      <div class="card">
+        <span class="icon">🔔</span>
+        <h3>Alert on what matters</h3>
+        <p>Rule-based alerting on result, status and query logs — plus node state — fanned out to webhook and email channels, with cooldown, dedupe and hot reload.</p>
+      </div>
+      <div class="card">
+        <span class="icon">📁</span>
+        <h3>Browse node files</h3>
+        <p>A per-node file explorer backed by accelerated, permission-checked osquery distributed queries — directory listings and stat without a shell.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🩺</span>
+        <h3>Know your deployment is healthy</h3>
+        <p>An optional health page fuses live database and Redis pings, per-service runtime stats, a TLS heartbeat and cached upgrade status.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -132,12 +149,20 @@
         <p>The REST API service, secured with JWT authentication by default, with trusted proxy controls and audit logging. Powers the operator UI and any automation you build. Fully documented with OpenAPI.</p>
       </div>
       <div class="card component">
-        <h3>Operator Frontend <span class="badge new">New</span></h3>
-        <p>A modern React single-page application: nodes, environments, live and saved queries, carves, users, settings, node activity, posture data and the node console — all in one UI.</p>
+        <h3>Operator frontend</h3>
+        <p>A modern React single-page application: nodes, environments, live and saved queries, carves, tags, users, enrollment, audit log, log sinks, auth providers, alerting, posture data, the node console and the file explorer — with live updates over SSE.</p>
       </div>
       <div class="card component">
         <h3><code>osctrl-cli</code></h3>
         <p>The operator command-line interface for scripting and administration — manage environments, nodes, queries and users from your terminal or CI, via API or direct DB mode.</p>
+      </div>
+      <div class="card component">
+        <h3><code>osctrl-mcp</code> <span class="badge new">New</span></h3>
+        <p>A Model Context Protocol server — a standalone stdio binary, or hosted by <code class="inline">osctrl-api</code> at <code class="inline">/api/v1/mcp</code>. It gives AI agents permission-checked fleet inspection. Write tools are a separate switch, off by default.</p>
+      </div>
+      <div class="card component">
+        <h3>Shared core (<code>pkg/*</code>)</h3>
+        <p>Every service builds on the same Go packages: node state, environments, queries, carves, users and permissions, caching, the log pipeline, alerting, audit log, MFA, GeoIP, posture and health.</p>
       </div>
     </div>
     <p style="text-align:center; margin-top: 28px;">
@@ -161,12 +186,12 @@
       <div class="card">
         <span class="icon">🔐</span>
         <h3>Security-first defaults</h3>
-        <p>JWT auth by default, trusted proxy controls, audit logging and authenticated access throughout.</p>
+        <p>JWT auth by default, optional MFA with passkeys and TOTP, trusted proxy controls and audit logging throughout.</p>
       </div>
       <div class="card">
-        <span class="icon">🧭</span>
-        <h3>Rich context</h3>
-        <p>Optional posture ingestion, MaxMind GeoIP country enrichment and node activity tracking.</p>
+        <span class="icon">🤖</span>
+        <h3>Ready for AI agents</h3>
+        <p>An MCP server exposes fleet inspection to Claude and other MCP clients, bounded by the token's own permissions.</p>
       </div>
       <div class="card">
         <span class="icon">🆓</span>
@@ -192,10 +217,15 @@
 <span class="p">$</span> git clone https://github.com/jmpsec/osctrl.git
 <span class="p">$</span> cd osctrl
 
+<span class="c"># Prepare the environment file and development certificate</span>
+<span class="p">$</span> cp .env.example .env
+<span class="p">$</span> make docker_dev_certs
+
 <span class="c"># Build and run everything in Docker</span>
-<span class="p">$</span> make docker_dev</pre>
+<span class="p">$</span> make docker_dev_build
+<span class="p">$</span> make docker_dev_up</pre>
       <p class="code-caption">
-        Frontend at <code class="inline">https://localhost:8444</code> · Legacy admin UI at <code class="inline">https://localhost:8443</code>
+        The operator frontend comes up at <code class="inline">https://localhost:8444</code>.
       </p>
       <p style="margin-top: 20px;">
         <a href="getting-started.html">Full installation options: Docker, provisioning script, or building from source →</a>
@@ -234,9 +264,9 @@
       <div>
         <h4>Documentation</h4>
         <ul>
-          <li><a href="https://osctrl.net" target="_blank" rel="noopener">osctrl.net</a></li>
-          <li><a href="https://osctrl.net/components/" target="_blank" rel="noopener">Components</a></li>
-          <li><a href="https://osctrl.net/deployment/" target="_blank" rel="noopener">Deployment</a></li>
+          <li><a href="https://docs.osctrl.net" target="_blank" rel="noopener">docs.osctrl.net</a></li>
+          <li><a href="https://docs.osctrl.net/components/" target="_blank" rel="noopener">Components</a></li>
+          <li><a href="https://docs.osctrl.net/deployment/" target="_blank" rel="noopener">Deployment</a></li>
           <li><a href="https://github.com/jmpsec/osctrl/blob/main/osctrl-api.yaml" target="_blank" rel="noopener">OpenAPI Spec</a></li>
         </ul>
       </div>
