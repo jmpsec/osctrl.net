@@ -8,7 +8,12 @@
 # IDE metadata
 .vscode
 .idea
+.claude
+.codex
 
 # Local Superpowers planning and visual-companion artifacts
 .superpowers/
 docs/superpowers/
+
+*.md
+!README.md

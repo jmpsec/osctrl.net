@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Use Cases — osctrl</title>
-  <meta name="description" content="What security teams use osctrl for: fleet visibility, threat hunting, incident response, alerting, compliance and posture monitoring, forensics, automation and AI agents.">
+  <meta name="description" content="What security teams use osctrl for: fleet visibility, threat hunting, vulnerability management, incident response, alerting, compliance and posture monitoring, forensics, automation and AI agents.">
   <link rel="canonical" href="https://osctrl.net/use-cases.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="osctrl">
   <meta property="og:title" content="Use Cases — osctrl">
-  <meta property="og:description" content="Use osctrl for endpoint visibility, threat hunting, live investigation, alerting, compliance, posture monitoring, forensics, automation and AI-assisted operations.">
+  <meta property="og:description" content="Use osctrl for endpoint visibility, threat hunting, vulnerability management, live investigation, alerting, compliance, posture monitoring, forensics and AI-assisted operations.">
   <meta property="og:url" content="https://osctrl.net/use-cases.html">
   <meta property="og:image" content="https://osctrl.net/assets/osctrl-og.png">
   <meta property="og:image:width" content="1200">
@@ -98,6 +98,28 @@
 
     <div class="feature-row">
       <div>
+        <h3>🛠️ Vulnerability management</h3>
+        <p>
+          You already know what is installed across the fleet — osctrl turns that into a
+          list of what is actually exposed. Opt-in vulnerability monitoring matches the
+          package inventory your nodes report against public advisory data.
+        </p>
+        <ul>
+          <li>Ready-made <code class="inline">vuln-linux</code>, <code class="inline">vuln-darwin</code> and <code class="inline">vuln-windows</code> schedule profiles — no queries to write</li>
+          <li>Debian, Ubuntu, RHEL, Rocky, AlmaLinux packages plus PyPI and npm, matched against OSV by source package</li>
+          <li>Known-exploited findings flagged from the CISA KEV catalog, so you triage by real-world risk</li>
+          <li>Windows programs, macOS apps, Homebrew and Chocolatey matched by NVD CPE as <em>possible</em> findings — shown, but never alerting and never scored</li>
+          <li>What can't be assessed is reported as such: Alpine, CentOS, SUSE and un-synced ecosystems are never counted clean</li>
+          <li>Runs air-gapped — mirror the OSV and KEV feeds internally and point osctrl at them</li>
+        </ul>
+      </div>
+      <div class="card">
+        <p><strong>Benefit:</strong> vulnerability coverage without deploying another agent, and an honest answer about the hosts it cannot assess instead of a falsely clean report.</p>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div>
         <h3>🚨 Incident response &amp; forensics</h3>
         <p>
           When something goes wrong, osctrl gives responders direct, controlled access
@@ -125,6 +147,7 @@
         </p>
         <ul>
           <li>Optional posture ingestion from scheduled query prefixes</li>
+          <li>A "Known vulnerabilities" control mapped to ISO 27001 A.8.8, fed by vulnerability monitoring</li>
           <li>Track disk encryption, OS versions, patch levels, security agent health…</li>
           <li>Scheduled query packs distributed centrally per environment</li>
           <li>Status and result logs shipped to your compliance data pipeline</li>
@@ -145,6 +168,9 @@
         </p>
         <ul>
           <li>Scope a rule globally, to one environment, or to a single node</li>
+          <li><code class="inline">vuln_finding</code> rules fire at a severity threshold you choose — <code class="inline">kev</code>, <code class="inline">critical</code>, <code class="inline">high</code> and down</li>
+          <li>Vulnerability alerts group per advisory and are rate-capped, with a digest for the rest</li>
+          <li>Escalations alert once more when a finding becomes known-exploited or rises in severity</li>
           <li>Fan out to webhook and email channels, with Redis-backed cooldown and dedupe</li>
           <li>Dispatched history, so you can see what actually fired and when</li>
           <li>Hot reload — rules take effect without restarting a service</li>
