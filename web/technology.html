@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Technology &amp; Architecture — osctrl</title>
-  <meta name="description" content="How osctrl works: architecture, components (osctrl-tls, osctrl-api, osctrl-cli, osctrl-mcp, operator frontend), vulnerability monitoring, and the technology stack — Go, React, PostgreSQL, Redis.">
+  <meta name="description" content="How osctrl works: architecture, components (osctrl-tls, osctrl-api, osctrl-cli, osctrl-mcp, operator frontend), vulnerability monitoring, Santa sync, and the technology stack — Go, React, PostgreSQL, Redis.">
   <link rel="canonical" href="https://osctrl.net/technology.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="osctrl">
@@ -197,6 +197,7 @@
           <li>Distributed query read/write, with optional accelerated reads</li>
           <li>File carving uploads</li>
           <li>Optional software-inventory storage and the vulnerability-finding alert watcher</li>
+          <li>Optional Santa sync protocol for macOS nodes, authenticated with a per-environment token</li>
         </ul>
       </div>
       <div class="card component">
@@ -208,6 +209,7 @@
           <li>Authenticated osquery table metadata and sample query/carve libraries</li>
           <li>Optional SSE live updates and an optional hosted MCP endpoint</li>
           <li>Optional advisory feed sync and vulnerability matching, single-active across replicas</li>
+          <li>Optional Santa rules, token, machines and events per environment</li>
           <li>Documented with an OpenAPI specification</li>
         </ul>
       </div>
@@ -217,7 +219,7 @@
         <ul>
           <li>Nodes, environments, queries, saved queries, carves, tags, users, enrollment</li>
           <li>Audit log, service configuration, log sinks, auth providers and alerting</li>
-          <li>Node activity, optional posture data, vulnerability findings and an optional health page</li>
+          <li>Node activity, optional posture data, vulnerability findings, Santa and an optional health page</li>
           <li>Read-only node console and accelerated per-node file explorer</li>
           <li>osquery schema-aware query authoring, with live updates over SSE</li>
         </ul>
@@ -243,7 +245,7 @@
       </div>
       <div class="card component">
         <h3>Shared core (<code>pkg/*</code>)</h3>
-        <p>All services build on the same Go packages: node state, environments, queries, carves, users and permissions, tags, caching, logging pipeline, alerting, audit log, MFA, GeoIP, posture ingestion, vulnerability monitoring, health, rate limiting and more.</p>
+        <p>All services build on the same Go packages: node state, environments, queries, carves, users and permissions, tags, caching, logging pipeline, alerting, audit log, MFA, GeoIP, posture ingestion, vulnerability monitoring, Santa, health, rate limiting and more.</p>
       </div>
     </div>
   </div>
@@ -300,6 +302,11 @@
           <td>Vulnerability data</td>
           <td><strong>OSV · CISA KEV · NVD</strong></td>
           <td>Optional, off by default. Feeds are operator-controlled URLs, so air-gapped deployments can mirror them internally.</td>
+        </tr>
+        <tr>
+          <td>macOS allowlisting</td>
+          <td><strong><a href="https://northpole.dev" target="_blank" rel="noopener">Santa</a></strong></td>
+          <td>Optional, off by default. <code class="inline">osctrl-tls</code> implements Santa's <a href="https://northpole.dev/features/sync/" target="_blank" rel="noopener">sync protocol</a>, JSON or protobuf.</td>
         </tr>
         <tr>
           <td>AI integration</td>

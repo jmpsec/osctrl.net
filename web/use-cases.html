@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Use Cases — osctrl</title>
-  <meta name="description" content="What security teams use osctrl for: fleet visibility, threat hunting, vulnerability management, incident response, alerting, compliance and posture monitoring, forensics, automation and AI agents.">
+  <meta name="description" content="What security teams use osctrl for: fleet visibility, threat hunting, vulnerability management, macOS application allowlisting, incident response, alerting, compliance and posture monitoring, forensics, automation and AI agents.">
   <link rel="canonical" href="https://osctrl.net/use-cases.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="osctrl">
@@ -115,6 +115,27 @@
       </div>
       <div class="card">
         <p><strong>Benefit:</strong> vulnerability coverage without deploying another agent, and an honest answer about the hosts it cannot assess instead of a falsely clean report.</p>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div>
+        <h3>🎅 macOS application allowlisting</h3>
+        <p>
+          osctrl is a sync server for <a href="https://northpole.dev" target="_blank" rel="noopener">Santa</a>,
+          so the Macs you already query with osquery also take their binary authorization
+          rules from osctrl. Roll out in MONITOR mode, learn what your fleet runs, then lock it down.
+        </p>
+        <ul>
+          <li>Allow and block rules by binary hash, CDHash, certificate, Team ID or signing ID</li>
+          <li>Scope rules to an environment, a tag or a single node — the most specific scope wins</li>
+          <li>Review execution events and allow legitimate binaries straight from the event list</li>
+          <li>Switch an environment between MONITOR and LOCKDOWN from the Santa page</li>
+          <li>An optional <code class="inline">santa_agent</code> posture check reports whether Santa's system extension is active</li>
+        </ul>
+      </div>
+      <div class="card">
+        <p><strong>Benefit:</strong> application control for macOS without another management server — same nodes, same environments, same audit log. See the <a href="https://northpole.dev/features/sync/" target="_blank" rel="noopener">Santa sync docs</a>.</p>
       </div>
     </div>
 
